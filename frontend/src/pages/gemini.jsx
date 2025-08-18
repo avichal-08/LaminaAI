@@ -1,6 +1,5 @@
-import React, { useState,useRef} from 'react';
+import { useState,useRef} from 'react';
 import axios from 'axios';
-import ReactMarkdown from "react-markdown";
 import { FaArrowUp } from "react-icons/fa";
 import Loader from '../utils/loader';
 export default function Gemini(){
@@ -42,7 +41,7 @@ export default function Gemini(){
   };
 
     return(
-        <div className='bg-black/40 h-[95vh] w-full max-w-4xl relative shadow shadow-white rounded-2xl px-4 pt-8 items-center'>
+        <div className='bg-black/40 h-[95vh] w-full max-w-4xl relative shadow shadow-white rounded-2xl px-4 pt-2 items-center'>
             <div className='h-[80%] overflow-y-auto relative overflow-x-hidden flex flex-col gap-4 px-4 border border-b-gray-300'>
             {prompt&&<div className='bg-gray-800 break-all [overflow-wrap:anywhere] w-fit flex self-end p-4 rounded-4xl text-white'>{prompt}</div>}
             {loading&&<div className='self-center absolute top-[50%] right-[55%]'><Loader/></div>}
