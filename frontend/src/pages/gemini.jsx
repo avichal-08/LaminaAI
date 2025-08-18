@@ -17,11 +17,12 @@ export default function Gemini(){
             setResponse('');
             setPrompt(promptRef.current.value);
             setLoading(true);
-
+            const query=promptRef.current.value.trim();
+            promptRef.current.value='';
             try{
                 const response= await axios.post(`${api_url}/api/v1/gemini`,{
                     model:`${model}`,
-                    query:`${promptRef.current.value.trim()}`
+                    query
                 });
                 setLoading(false);
                 setResponse(response.data.response);
