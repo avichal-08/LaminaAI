@@ -44,7 +44,7 @@ export default function Gemini(){
         <div className='bg-black/40 h-[95vh] w-[98%] max-w-4xl relative shadow shadow-white rounded-2xl px-4 pt-2 items-center'>
             <div className='h-[80%] overflow-y-auto relative overflow-x-hidden flex flex-col gap-4 px-4 border border-b-white'>
             {prompt&&<div className='bg-gray-800 break-all [overflow-wrap:anywhere] w-fit flex self-end p-4 rounded-4xl text-white'>{prompt}</div>}
-            {loading&&<div className='self-center absolute top-[50%] right-[55%]'><Loader/></div>}
+            {loading&&<div className='self-center absolute top-[50%] right-[68%] md:right-[55%]'><Loader/></div>}
             {response&&<div className='bg-gray-800 break-all [overflow-wrap:anywhere] w-fit max-w-[95%] flex p-4 rounded-4xl text-white'>{response}</div>}
             </div>
             <div className='flex gap-4 text-white rounded-4xl justify-between py-2 px-5'>
