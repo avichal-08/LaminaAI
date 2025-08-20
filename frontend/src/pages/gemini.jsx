@@ -3,7 +3,7 @@ import axios from 'axios';
 import { FaArrowUp } from "react-icons/fa";
 
 export default function Gemini() {
-    const [model, setModel] = useState('gemini-2.5-flash');
+    const [model, setModel] = useState('Gemini 2.5 Flash');
     const [messages, setMessages] = useState([]);
     const [button, setButton] = useState(true);
     const promptRef = useRef("");
@@ -20,10 +20,15 @@ export default function Gemini() {
         promptRef.current.value = '';
         setButton(false);
         console.log(messages)
-
+         if(model==='Gemini 2.5 Pro'){
+                        var mdl=("Gemini 2.5 Flash").split(" ").join("-").toLowerCase();
+                    }
+                    else{
+                        var mdl = model.split(" ").join("-").toLowerCase();
+                    }
         try {
             const res = await axios.post(`${api_url}/api/v1/gemini`,{
-                model:`${model}`,
+                model:`${mdl}`,
                 conversation:updatedMessages
             });
             setButton(true);
@@ -46,7 +51,7 @@ export default function Gemini() {
 
     useEffect(() => {
         promptRef.current?.focus();
-        bottomRef.current?.scrollIntoView({ behavior:'smooth'});
+        bottomRef.current?.scrollIntoView({behavior:'smooth'});
     }, [messages]);
 
     return (
@@ -57,7 +62,7 @@ export default function Gemini() {
                         key={idx} 
                         className={`w-fit max-w-[95%] flex p-3 rounded-4xl 
                             ${msg.role==='user'?'self-end  bg-blue-300 break-all [overflow-wrap:anywhere] w-fit':'self-start bg-pink-300 whitespace-pre-wrap leading-relaxed w-auto'}`}>
-                        { msg.text}
+                        {msg.text}
                     </div>
                 ))}
                 <div ref={bottomRef}></div>
@@ -65,13 +70,12 @@ export default function Gemini() {
 
             <div className='flex gap-4 text-white rounded-4xl justify-between py-2 px-5'>
                 {models.map((mdl) => {
-                    const mdlValue = mdl.split(" ").join("-").toLowerCase();
                     return (
                         <button 
                             key={mdl}
                             onKeyDown={handleKeyDown}
-                            onClick={() => setModel(mdlValue)}
-                            className={`${model === mdlValue ? "bg-pink-300 text-black" : "bg-gray-100/10"} p-1 rounded-4xl shadow shadow-white cursor-pointer`}>
+                            onClick={() => setModel(mdl)}
+                            className={`${model===mdl?"bg-pink-300 text-black":"bg-gray-100/10"} p-1 rounded-4xl shadow shadow-white cursor-pointer`}>
                             {mdl}
                         </button>
                     );
