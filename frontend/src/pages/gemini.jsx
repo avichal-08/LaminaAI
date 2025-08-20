@@ -16,6 +16,7 @@ export default function Gemini() {
         const query = promptRef.current.value.trim();
         if (query.length === 0) return;
 
+        // Add user message immediately
         setMessages(prev => [...prev, { role: 'user', text: query }]);
         promptRef.current.value = '';
         setLoading(true);
@@ -25,7 +26,9 @@ export default function Gemini() {
                 model: `${model}`,
                 query
             });
-            setLoading(false)
+            setLoading(false);
+
+            // Add bot response
             setMessages(prev => [...prev, { role: 'bot', text: res.data.response }]);
         } catch (error) {
             setLoading(false);
@@ -40,6 +43,8 @@ export default function Gemini() {
             handleUpload();
         }
     };
+
+    // Auto-scroll to latest message
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
@@ -47,7 +52,7 @@ export default function Gemini() {
     return (
         <div className='bg-black/40 h-[95vh] w-[98%] max-w-4xl relative shadow shadow-white rounded-2xl px-4 pt-2 items-center'>
             
-
+            {/* Chat messages */}
             <div className='h-[80%] overflow-y-auto relative overflow-x-hidden flex flex-col gap-4 px-4 border border-b-white'>
                 {messages.map((msg, idx) => (
                     <div 
@@ -61,6 +66,7 @@ export default function Gemini() {
                 <div ref={bottomRef}></div>
             </div>
 
+            {/* Model selection buttons */}
             <div className='flex gap-4 text-white rounded-4xl justify-between py-2 px-5'>
                 {models.map((mdl) => {
                     const mdlValue = mdl.split(" ").join("-").toLowerCase();
@@ -74,7 +80,9 @@ export default function Gemini() {
                         </button>
                     );
                 })}
-            </div
+            </div>
+
+            {/* Input box */}
             <div className="bg-black/10 w-[95%] rounded-4xl absolute bottom-2 items-center shadow shadow-white flex">
                 <input 
                     type='text' 
