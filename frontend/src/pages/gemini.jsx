@@ -5,7 +5,7 @@ import Loader from '../utils/loader';
 
 export default function Gemini() {
     const [model, setModel] = useState('gemini-2.5-flash');
-    const [messages, setMessages] = useState([]); // Store chat history
+    const [messages, setMessages] = useState([]); 
     const [loading, setLoading] = useState(false);
     const promptRef = useRef("");
     const bottomRef = useRef();
@@ -16,7 +16,6 @@ export default function Gemini() {
         const query = promptRef.current.value.trim();
         if (query.length === 0) return;
 
-        // Add user message immediately
         setMessages(prev => [...prev, { role: 'user', text: query }]);
         promptRef.current.value = '';
         setLoading(true);
@@ -27,8 +26,6 @@ export default function Gemini() {
                 query
             });
             setLoading(false);
-
-            // Add bot response
             setMessages(prev => [...prev, { role: 'bot', text: res.data.response }]);
         } catch (error) {
             setLoading(false);
@@ -44,38 +41,45 @@ export default function Gemini() {
         }
     };
 
-    // Auto-scroll to latest message
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
     return (
-        <div className='bg-black/40 h-[95vh] w-[98%] max-w-4xl relative shadow shadow-white rounded-2xl px-4 pt-2 items-center'>
+        <div className="bg-black/50 h-[95vh] w-[98%] max-w-4xl relative shadow-lg shadow-white/30 rounded-2xl px-4 pt-2 flex flex-col">
             
-            {/* Chat messages */}
-            <div className='h-[80%] overflow-y-auto relative overflow-x-hidden flex flex-col gap-4 px-4 border border-b-white'>
+            {/* Chat window */}
+            <div className="flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-4 px-4 py-2 border border-b-white/40 rounded-xl hide-scrollbar">
                 {messages.map((msg, idx) => (
                     <div 
                         key={idx} 
-                        className={`bg-gray-800 break-all [overflow-wrap:anywhere] w-fit max-w-[95%] flex p-4 rounded-4xl text-white 
-                            ${msg.role === 'user' ? 'self-end' : 'self-start'}`}>
+                        className={`break-all [overflow-wrap:anywhere] max-w-[80%] px-5 py-3 rounded-2xl text-white transition-all duration-300
+                            ${msg.role === 'user' 
+                                ? 'self-end bg-gradient-to-r from-blue-500 to-blue-700 shadow-md' 
+                                : 'self-start bg-gray-700 shadow-inner'}`}>
                         {msg.text}
                     </div>
                 ))}
-                {loading && <div className='self-center absolute top-[50%] right-[68%] md:right-[55%]'><Loader/></div>}
+                {loading && (
+                    <div className="self-center mt-4"><Loader /></div>
+                )}
                 <div ref={bottomRef}></div>
             </div>
 
-            {/* Model selection buttons */}
-            <div className='flex gap-4 text-white rounded-4xl justify-between py-2 px-5'>
+            {/* Model buttons */}
+            <div className="flex gap-3 text-white rounded-2xl justify-center py-2 px-4 mt-2 bg-black/30 shadow-inner">
                 {models.map((mdl) => {
                     const mdlValue = mdl.split(" ").join("-").toLowerCase();
+                    const active = model === mdlValue;
                     return (
                         <button 
                             key={mdl}
                             onKeyDown={handleKeyDown}
                             onClick={() => setModel(mdlValue)}
-                            className={`${model === mdlValue ? "bg-gray-100 text-black" : ""} p-1 rounded-4xl shadow shadow-white cursor-pointer`}>
+                            className={`px-3 py-1 rounded-3xl cursor-pointer text-sm transition 
+                                ${active 
+                                    ? "bg-white text-black font-semibold" 
+                                    : "bg-gray-800 hover:bg-gray-600"}`}>
                             {mdl}
                         </button>
                     );
@@ -83,15 +87,17 @@ export default function Gemini() {
             </div>
 
             {/* Input box */}
-            <div className="bg-black/10 w-[95%] rounded-4xl absolute bottom-2 items-center shadow shadow-white flex">
+            <div className="bg-black/40 w-[95%] rounded-full absolute bottom-3 left-1/2 -translate-x-1/2 items-center shadow-md shadow-white/30 flex">
                 <input 
-                    type='text' 
-                    placeholder="Ask anything" 
+                    type="text" 
+                    placeholder="Ask anything..." 
                     ref={promptRef} 
                     onKeyDown={handleKeyDown} 
-                    className='h-full w-[87%] md:w-[95%] py-3 pl-4 tracking-wider text-white focus:outline-none focus:bg-black/10 rounded-l-4xl'
+                    className="h-12 w-full py-2 pl-5 tracking-wide text-white bg-transparent focus:outline-none placeholder-gray-300 rounded-l-full"
                 />
-                <div onClick={handleUpload} className='bg-white rounded-full text-xl flex items-center justify-center w-8 h-8 cursor-pointer'>
+                <div 
+                    onClick={handleUpload} 
+                    className="bg-white rounded-full text-xl flex items-center justify-center w-10 h-10 mx-2 cursor-pointer hover:scale-105 active:scale-95 transition">
                     <FaArrowUp />
                 </div>
             </div>
