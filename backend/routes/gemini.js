@@ -5,10 +5,14 @@ const router=express.Router();
 router.post('/',async(req,res)=>{
     try{
     const mdl=req.body.model;
-    const query=req.body.query;
+    const conversation=req.body.conversation;
+    const gemCon=conversation.map(m=>({
+      role:m.role,
+      parts:[{text:m.text}]
+    }))
 
     const model=geminiConfig.getGenerativeModel({model:`${mdl}`});
-    const result=await model.generateContent(query);
+    const result=await model.generateContent({contents:gemCon});
     res.json({response: result.response.text()});
 }catch(error){
     console.log(`error:${error}`);

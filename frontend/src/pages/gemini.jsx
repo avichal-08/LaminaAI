@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
+import React,{ useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { FaArrowUp } from "react-icons/fa";
 
 export default function Gemini() {
     const [model, setModel] = useState('gemini-2.5-flash');
     const [messages, setMessages] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [button, setButton] = useState(true);
     const promptRef = useRef("");
     const bottomRef = useRef();
     const api_url = import.meta.env.VITE_API_URL;
@@ -15,21 +15,25 @@ export default function Gemini() {
         const query = promptRef.current.value.trim();
         if (query.length === 0) return;
 
-        setMessages(prev => [...prev, { role: 'user', text: query }]);
+        const updatedMessages=[...messages,{ role:'user',text:query}];
+        setMessages(updatedMessages);
         promptRef.current.value = '';
-        setLoading(false);
+        setButton(false);
+        console.log(messages)
 
         try {
-            const res = await axios.post(`${api_url}/api/v1/gemini`, {
-                model: `${model}`,
-                query
+            const res = await axios.post(`${api_url}/api/v1/gemini`,{
+                model:`${model}`,
+                conversation:updatedMessages
             });
-            setLoading(true);
-            setMessages(prev => [...prev, { role: 'bot', text: res.data.response }]);
-        } catch (error) {
-            setLoading(true);
-            console.log(`error: ${error}`);
-            setMessages(prev => [...prev, { role: 'bot', text: "Please try again" }]);
+            setButton(true);
+            let cleanText = res.data.response.replace(/\*/g, "");
+            console.log(`text:${cleanText}`)
+            setMessages(prev=>[...prev,{role:'model',text:cleanText}]);
+        }catch(error){
+            setButton(true);
+            console.log(`error:${error}`);
+            setMessages(prev=>[...prev,{role:'model',text:"Please try again later"}]);
         }
     };
 
@@ -41,18 +45,19 @@ export default function Gemini() {
     };
 
     useEffect(() => {
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        promptRef.current?.focus();
+        bottomRef.current?.scrollIntoView({ behavior:'smooth'});
     }, [messages]);
 
     return (
         <div className='bg-black/40 h-[95vh] w-[98%] max-w-4xl relative shadow shadow-white rounded-2xl px-4 pt-2 items-center'>
-            <div className='h-[80%] overflow-y-auto relative overflow-x-hidden flex flex-col gap-4 px-4 border border-b-white'>
+           <div className='h-[80%] overflow-y-auto relative overflow-x-hidden flex flex-col gap-4 px-4 border border-b-white'>
                 {messages.map((msg, idx) => (
                     <div 
                         key={idx} 
-                        className={` break-all [overflow-wrap:anywhere] w-fit max-w-[95%] flex p-3 rounded-4xl 
-                            ${msg.role === 'user' ? 'self-end  bg-blue-300' : 'self-start bg-pink-300 '}`}>
-                        {msg.text}
+                        className={`w-fit max-w-[95%] flex p-3 rounded-4xl 
+                            ${msg.role==='user'?'self-end  bg-blue-300 break-all [overflow-wrap:anywhere] w-fit':'self-start bg-pink-300 whitespace-pre-wrap leading-relaxed w-auto'}`}>
+                        { msg.text}
                     </div>
                 ))}
                 <div ref={bottomRef}></div>
@@ -81,7 +86,7 @@ export default function Gemini() {
                     onKeyDown={handleKeyDown} 
                     className='h-full w-[87%] md:w-[95%] py-3 pl-4 tracking-wider text-white focus:outline-none rounded-l-4xl'
                 />
-                {loading&&<div onClick={handleUpload} className='bg-white rounded-full text-xl flex items-center justify-center w-8 h-8 cursor-pointer'>
+                {button&&<div onClick={handleUpload} className='bg-white rounded-full text-xl flex items-center justify-center w-8 h-8 cursor-pointer'>
                     <FaArrowUp />
                 </div>}
             </div>
