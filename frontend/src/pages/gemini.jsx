@@ -66,20 +66,20 @@ export default function Gemini() {
                             key={mdl}
                             onKeyDown={handleKeyDown}
                             onClick={() => setModel(mdlValue)}
-                            className={`${model === mdlValue ? "bg-pink-300 text-black" : ""} p-1 rounded-4xl shadow shadow-white cursor-pointer`}>
+                            className={`${model === mdlValue ? "bg-pink-300 text-black" : "bg-gray-100/10"} p-1 rounded-4xl shadow shadow-white cursor-pointer`}>
                             {mdl}
                         </button>
                     );
                 })}
             </div>
 
-            <div className="bg-black/10 w-[95%] rounded-4xl absolute bottom-2 items-center shadow shadow-white flex">
+            <div className="w-[95%] rounded-4xl absolute bottom-2 items-center bg-gray-100/10 shadow shadow-white flex">
                 <input 
                     type='text' 
                     placeholder="Ask anything" 
                     ref={promptRef} 
                     onKeyDown={handleKeyDown} 
-                    className='h-full w-[87%] md:w-[95%] py-3 pl-4 tracking-wider text-white focus:outline-none focus:bg-black/10 rounded-l-4xl'
+                    className='h-full w-[87%] md:w-[95%] py-3 pl-4 tracking-wider text-white focus:outline-none rounded-l-4xl'
                 />
                 {loading&&<div onClick={handleUpload} className='bg-white rounded-full text-xl flex items-center justify-center w-8 h-8 cursor-pointer'>
                     <FaArrowUp />
