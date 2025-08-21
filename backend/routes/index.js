@@ -1,7 +1,7 @@
 import express from 'express';
-import geminiRoute from './gemini.js';
+import openRoute from './openRouter.js'
 const router=express.Router();
 
-router.use('/gemini',geminiRoute);
+router.use('/openRouter',openRoute);
 
 export default router;
