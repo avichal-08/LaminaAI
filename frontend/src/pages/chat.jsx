@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FaArrowUp } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { RxCross2 } from "react-icons/rx";
+import { FaGithub } from "react-icons/fa";
 
 export default function Chat() {
     const [model, setModel] = useState('mistralai/mistral-small-3.2-24b-instruct:free');
@@ -73,8 +74,13 @@ export default function Chat() {
             </div>
 
             <div className='w-full'>
-            {!slider&&<div className='text-white ml-2 lg:hidden cursor-pointer' onClick={()=>setSlider(!slider)}><RxHamburgerMenu size={30}/></div>}
+            <div className='flex justify-between px-2 pt-2 lg:pt-0 lg:mb-1 lg:ml-[82%]'>
+            {!slider&&<div className='text-white lg:hidden cursor-pointer' onClick={()=>setSlider(!slider)}><RxHamburgerMenu size={30}/></div>}
             {slider&&<div className='text-white ml-2 lg:hidden cursor-pointer' onClick={()=>setSlider(!slider)}><RxCross2 size={30}/></div>}
+            <a href="https://github.com/avichal-08/LaminaAI" target="_blank" rel="noopener noreferrer" className='text-white cursor-pointer'><FaGithub size={35}/></a>
+            </div>
+            
+            
 
             {slider&&<div className='absolute lg:hidden bg-black h-[95%] flex flex-col lg:w-80 w-60 text-white rounded-4xl justify-between py-8 px-5 z-10'>
                 {models.map((mdl) => {
@@ -90,7 +96,7 @@ export default function Chat() {
                 })}
             </div>}
 
-           <div className='bg-black/40 h-[93vh] w-[98%] max-w-4xl  relative shadow shadow-white rounded-2xl px-4 pt-2 mt-4 lg:mt-0 items-center'>
+           <div className='bg-black/40 h-[91vh] w-[98%] max-w-4xl  relative shadow shadow-white rounded-2xl px-4 pt-2 mt-4 lg:mt-0 items-center'>
               <div className='h-[86%] overflow-y-auto relative overflow-x-hidden flex flex-col gap-4 px-4 border border-b-white'>
                 {messages.map((msg, idx) => (
                     <div 
