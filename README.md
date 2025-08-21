@@ -1,6 +1,6 @@
 # LaminaAI  
 
-LaminaAI is a lightweight wrapper for Large Language Models (LLMs).  
+[**LaminaAI**](https://lamina-ai-avi.vercel.app/)   is a lightweight wrapper for Large Language Models (LLMs).  )   is a lightweight wrapper for Large Language Models (LLMs).  
 It provides a simple backend (based on express) to send prompts to various LLM providers and a frontend (based on React) to test them out quickly.  
 
 ---
