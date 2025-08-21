@@ -16,8 +16,7 @@ export default function Chat() {
         {"OpenAI gpt oss-20b":"openai/gpt-oss-20b:free"},{"MoonshotAI Kimi K2 ":"moonshotai/kimi-k2:free"},
         {"DeepSeek R1T2 Chimera":"tngtech/deepseek-r1t2-chimera:free"},
         {"Google Gemma 2":"google/gemma-2-9b-it:free"},
-        {"Meta Llama 3.1 ":"meta-llama/llama-3.1-405b-instruct:free"},
-        {"NVIDIA Llama 3.1":"nvidia/llama-3.1-nemotron-ultra-253b-v1:free"},
+        {"ArliAI":"arliai/qwq-32b-arliai-rpr-v1:free"},
         {"Agentica Deepcoder":"agentica-org/deepcoder-14b-preview:free"},
         {"Microsoft DS R1":"microsoft/mai-ds-r1:free"},
         {"Qwen 2.5 VL":"qwen/qwen2.5-vl-72b-instruct:free"}];
